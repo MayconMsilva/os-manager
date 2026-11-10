@@ -3,7 +3,7 @@ spring:
     name: os-manager
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/osmanager}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/osmanager}
     username: ${DB_USER:osmanager}
     password: ${DB_PASSWORD:osmanager123}
 
