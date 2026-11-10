@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: os-manager-db
+    environment:
+      POSTGRES_DB: osmanager
+      POSTGRES_USER: osmanager
+      POSTGRES_PASSWORD: osmanager123
+    ports:
+      - "5432:5432"
+    volumes:
+      - os_manager_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U osmanager -d osmanager"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  os_manager_data:

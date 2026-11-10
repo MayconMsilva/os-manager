@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: os-manager
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/osmanager}
+    username: ${DB_USER:osmanager}
+    password: ${DB_PASSWORD:osmanager123}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
