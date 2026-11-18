@@ -40,6 +40,12 @@ public class GlobalExceptionHandler {
         return resposta(HttpStatus.CONFLICT, ex.getMessage(), request, null);
     }
 
+    @ExceptionHandler(RegraNegocioException.class)
+    public ResponseEntity<ApiError> tratarRegradeNegocio(RegraNegocioException ex,
+                                                         HttpServletRequest request){
+        return resposta(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage(), request, null);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiError> tratarCorpoInválido(HttpMessageNotReadableException ex,
                                                         HttpServletRequest request){
