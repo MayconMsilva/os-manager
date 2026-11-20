@@ -47,6 +47,7 @@ public class Equipamento {
     @Column(name = "criado_em", nullable = false, updatable = false)
     private OffsetDateTime criadoEm;
 
+    @PrePersist
     void definirCriadoEm(){
         if(criadoEm == null){
             criadoEm = OffsetDateTime.now();

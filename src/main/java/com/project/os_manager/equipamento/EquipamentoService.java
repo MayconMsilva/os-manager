@@ -46,6 +46,11 @@ public class EquipamentoService {
         return equipamentos.stream().map(EquipamentoResponse::de).toList();
     }
 
+    @Transactional(readOnly = true)
+    public EquipamentoResponse buscar(Long id){
+        return EquipamentoResponse.de(buscarEntidade(id));
+    }
+
     @Transactional
     public EquipamentoResponse atualizar(Long id, EquipamentoRequest request){
         Equipamento equipamento = buscarEntidade(id);
