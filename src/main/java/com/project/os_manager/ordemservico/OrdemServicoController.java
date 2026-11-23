@@ -1,9 +1,6 @@
 package com.project.os_manager.ordemservico;
 
-import com.project.os_manager.ordemservico.dto.AlteracaoStatusRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoAtualizacaoRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoCriacaoRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoResponse;
+import com.project.os_manager.ordemservico.dto.*;
 import com.project.os_manager.ordemservico.enums.StatusOrdemServico;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +41,11 @@ public class OrdemServicoController {
     @GetMapping("/{id}")
     public OrdemServicoResponse buscar(@PathVariable Long id){
         return service.buscar(id);
+    }
+
+    @GetMapping("/{id}/historico")
+    public List<HistoricoStatusResponse> historico(@PathVariable Long id){
+        return service.listarHistorico(id);
     }
 
     @PutMapping("/{id}")
