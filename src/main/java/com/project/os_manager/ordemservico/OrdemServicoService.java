@@ -4,6 +4,7 @@ import com.project.os_manager.equipamento.Equipamento;
 import com.project.os_manager.equipamento.EquipamentoRepository;
 import com.project.os_manager.exception.RecursoNaoEncontradoException;
 import com.project.os_manager.exception.RegraNegocioException;
+import com.project.os_manager.ordemservico.dto.AlteracaoStatusRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoAtualizacaoRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoCriacaoRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoResponse;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -64,6 +66,25 @@ public class OrdemServicoService {
         os.setTipo(request.tipo());
         os.setPrioridade(request.prioridade());
 
+        return OrdemServicoResponse.de(os);
+    }
+
+    @Transactional
+    public OrdemServicoResponse alterarStatus(Long id, AlteracaoStatusRequest request){
+        OrdemServicoEntity os = buscarEntidade(id);
+        StatusOrdemServico atual = os.getStatus();
+        StatusOrdemServico novo = request.status();
+
+        if (!atual.podeTransitarPara(novo)){
+            throw new RegraNegocioException(
+                    "Transição de Status Inválido: " + atual + "->" +novo
+            );
+        }
+
+        os.setStatus(novo);
+        if (novo == StatusOrdemServico.CONCLUIDA){
+            os.setConcluidaEm(OffsetDateTime.now());
+        }
         return OrdemServicoResponse.de(os);
     }
 

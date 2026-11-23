@@ -1,5 +1,6 @@
 package com.project.os_manager.ordemservico;
 
+import com.project.os_manager.ordemservico.dto.AlteracaoStatusRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoAtualizacaoRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoCriacaoRequest;
 import com.project.os_manager.ordemservico.dto.OrdemServicoResponse;
@@ -50,5 +51,11 @@ public class OrdemServicoController {
                                             OrdemServicoAtualizacaoRequest request){
 
         return service.atualizar(id, request);
+    }
+
+    @PatchMapping("/{id}/status")
+    public OrdemServicoResponse alterarStatus(@PathVariable Long id, @Valid @RequestBody
+                                              AlteracaoStatusRequest request){
+        return service.alterarStatus(id, request);
     }
 }
