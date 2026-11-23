@@ -4,10 +4,7 @@ import com.project.os_manager.equipamento.Equipamento;
 import com.project.os_manager.equipamento.EquipamentoRepository;
 import com.project.os_manager.exception.RecursoNaoEncontradoException;
 import com.project.os_manager.exception.RegraNegocioException;
-import com.project.os_manager.ordemservico.dto.AlteracaoStatusRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoAtualizacaoRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoCriacaoRequest;
-import com.project.os_manager.ordemservico.dto.OrdemServicoResponse;
+import com.project.os_manager.ordemservico.dto.*;
 import com.project.os_manager.ordemservico.enums.StatusOrdemServico;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +19,7 @@ public class OrdemServicoService {
 
     private final OrdemServicoRepository repository;
     private final EquipamentoRepository equipamentoRepository;
+    private final OrdemServicoHistoricoRepository historicoRepository;
 
     @Transactional
     public OrdemServicoResponse criar(OrdemServicoCriacaoRequest request){
@@ -86,6 +84,24 @@ public class OrdemServicoService {
             os.setConcluidaEm(OffsetDateTime.now());
         }
         return OrdemServicoResponse.de(os);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HistoricoStatusResponse> listarHistorico(Long id){
+        if (!repository.existsById(id)){
+            throw new RecursoNaoEncontradoException("Ordem de Serviço não Encontrado: " + id);
+        }
+
+        return historicoRepository.findByOrdemServicoIdOrderByAlteradoEmAscIdAsc(id).stream()
+                .map(HistoricoStatusResponse::de)
+                .toList();
+    }
+
+
+    private void registrarHistorico(OrdemServicoEntity os, StatusOrdemServico anterior,
+                                    StatusOrdemServico novo, OffsetDateTime quando){
+
+        historicoRepository.save(new OrdemServicoHistorico(os, anterior, novo, quando));
     }
 
     private OrdemServicoEntity buscarEntidade(Long id){
