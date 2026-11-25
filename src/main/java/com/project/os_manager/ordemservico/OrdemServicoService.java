@@ -34,7 +34,10 @@ public class OrdemServicoService {
             os.setPrioridade(request.prioridade());
         }
 
-        return OrdemServicoResponse.de(repository.save(os));
+        OrdemServicoEntity salva = repository.save(os);
+        registrarHistorico(salva, null, salva.getStatus(), salva.getAbertaEm());
+
+        return OrdemServicoResponse.de(salva);
     }
 
     @Transactional(readOnly = true)
@@ -79,10 +82,12 @@ public class OrdemServicoService {
             );
         }
 
+        OffsetDateTime agora = OffsetDateTime.now();
         os.setStatus(novo);
         if (novo == StatusOrdemServico.CONCLUIDA){
-            os.setConcluidaEm(OffsetDateTime.now());
+            os.setConcluidaEm(agora);
         }
+        registrarHistorico(os, atual, novo, agora);
         return OrdemServicoResponse.de(os);
     }
 
