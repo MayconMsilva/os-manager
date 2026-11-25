@@ -50,6 +50,12 @@ public class OrdemServicoEntity {
     @Column(name = "concluida_em")
     private OffsetDateTime concluidaEm;
 
+    @Column(columnDefinition = "TEXT")
+    private String solucao;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacoes;
+
     @PrePersist
     void definirAbertaEm(){
         if(abertaEm == null){

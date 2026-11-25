@@ -56,7 +56,7 @@ public class OrdemServicoService {
     public OrdemServicoResponse atualizar(Long id, OrdemServicoAtualizacaoRequest request){
         OrdemServicoEntity os = buscarEntidade(id);
 
-        if (os.getStatus() == StatusOrdemServico.CONCLUIDA || os.getStatus() == StatusOrdemServico.CANCELADA){
+        if (os.getStatus().isFinal()){
             throw new RegraNegocioException(
                     "Não é Possível Alterar Uma Ordem de Serviço " + os.getStatus()
             );
@@ -82,9 +82,27 @@ public class OrdemServicoService {
             );
         }
 
+        String solucao = vazioParaNulo(request.solucao());
+        String observacoes = vazioParaNulo(request.observacoes());
+
+
+        if (novo == StatusOrdemServico.CONCLUIDA){
+            if (solucao == null){
+                throw new RegraNegocioException(
+                        "Informe a Solução aplicada para concluir a Ordem de Serviço"
+                );
+            }
+        }else if (solucao != null || observacoes != null){
+            throw new RegraNegocioException(
+                    "Solução e Observações só podem ser informadas ao concluir a Ordem de Serviço"
+            );
+        }
+
         OffsetDateTime agora = OffsetDateTime.now();
         os.setStatus(novo);
         if (novo == StatusOrdemServico.CONCLUIDA){
+            os.setSolucao(solucao);
+            os.setObservacoes(observacoes);
             os.setConcluidaEm(agora);
         }
         registrarHistorico(os, atual, novo, agora);

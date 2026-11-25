@@ -20,7 +20,9 @@ public record OrdemServicoResponse(
         StatusOrdemServico status,
         PrioridadeOrdemServico prioridade,
         OffsetDateTime abertaEm,
-        OffsetDateTime concluidaEm
+        OffsetDateTime concluidaEm,
+        String solucao,
+        String observacoes
 ) {
 
     public static OrdemServicoResponse de(OrdemServicoEntity os){
@@ -36,7 +38,9 @@ public record OrdemServicoResponse(
                 os.getStatus(),
                 os.getPrioridade(),
                 os.getAbertaEm(),
-                os.getConcluidaEm()
+                os.getConcluidaEm(),
+                os.getSolucao(),
+                os.getObservacoes()
         );
     }
 }
