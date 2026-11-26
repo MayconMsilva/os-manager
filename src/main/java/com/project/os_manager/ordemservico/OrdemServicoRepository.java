@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,7 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServicoEntity
             """)
     List<OrdemServicoEntity> filtrar(@Param("status")StatusOrdemServico status,
                                      @Param("equipamentoId") Long equipamentoId);
+
+
+    boolean existsByPlanoPreventivoIdAndStatusIn(Long planoId, Collection<StatusOrdemServico> status);
 }

@@ -4,6 +4,7 @@ import com.project.os_manager.equipamento.Equipamento;
 import com.project.os_manager.ordemservico.enums.PrioridadeOrdemServico;
 import com.project.os_manager.ordemservico.enums.StatusOrdemServico;
 import com.project.os_manager.ordemservico.enums.TipoOrdemServico;
+import com.project.os_manager.planopreventivo.PlanoPreventivo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,6 +56,11 @@ public class OrdemServicoEntity {
 
     @Column(columnDefinition = "TEXT")
     private String observacoes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plano_preventivo_id", updatable = false)
+    private PlanoPreventivo planoPreventivo;
+
 
     @PrePersist
     void definirAbertaEm(){

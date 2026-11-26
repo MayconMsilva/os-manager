@@ -5,12 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface PlanoPreventivoRepository extends JpaRepository<PlanoPreventivo, Long> {
 
-    @EntityGraph(attributePaths = "equipamento")
+    @EntityGraph(attributePaths = {"equipamento", "equipamento.cliente"})
     Optional<PlanoPreventivo> findComEquipamentoById(Long id);
 
     @Query("""
@@ -20,4 +21,14 @@ public interface PlanoPreventivoRepository extends JpaRepository<PlanoPreventivo
             order by p.proximaExecucao asc, p.id asc
             """)
     List<PlanoPreventivo> filtrar(@Param("equipamentoId") Long equipamentoId);
+
+
+    @Query("""
+            select p.id from PlanoPreventivo p
+            where p.ativo = true and p.proximaExecucao <= :data
+            order by p.proximaExecucao asc, p.id asc
+            
+            """)
+    List<Long> findIdsVencidos(@Param("data")LocalDate data);
+
 }
