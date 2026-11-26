@@ -16,8 +16,8 @@ public interface PlanoPreventivoRepository extends JpaRepository<PlanoPreventivo
     @Query("""
             select p from PlanoPreventivo p
             join fetch p.equipamento e
-            where(:equipamentoId is null or e.id = :equipamentoId)
-            order by p.proximaExecucao asc, p.id as
+            where (:equipamentoId is null or e.id = :equipamentoId)
+            order by p.proximaExecucao asc, p.id asc
             """)
     List<PlanoPreventivo> filtrar(@Param("equipamentoId") Long equipamentoId);
 }

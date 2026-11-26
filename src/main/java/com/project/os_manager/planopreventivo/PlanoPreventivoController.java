@@ -49,7 +49,7 @@ public class PlanoPreventivoController {
         return service.atualizar(id, request);
     }
 
-    @DeleteMapping("/{id]")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> desativar(@PathVariable Long id){
 
         service.desativar(id);

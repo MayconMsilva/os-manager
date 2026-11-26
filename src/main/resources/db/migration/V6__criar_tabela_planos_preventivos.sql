@@ -7,7 +7,7 @@ CREATE TABLE planos_preventivos(
     proxima_execucao DATE NOT NULL,
     prioridade VARCHAR(20) NOT NULL DEFAULT 'MEDIA',
     ativo BOOLEAN NOT NULL DEFAULT TRUE,
-    criado_em TIMESTAMP WITH THE ZONE NOT NULL DEFAULT now(),
+    criado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
 
 
     CONSTRAINT ck_plano_periodicidade CHECK(periodicidade_dias > 0),
