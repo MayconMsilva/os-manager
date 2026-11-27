@@ -4,6 +4,7 @@ import com.project.os_manager.exception.ConflitoException;
 import com.project.os_manager.exception.RecursoNaoEncontradoException;
 import com.project.os_manager.exception.RegraNegocioException;
 import com.project.os_manager.usuario.dto.AlteracaoSenhaRequest;
+import com.project.os_manager.usuario.dto.UsuarioAtualizacaoRequest;
 import com.project.os_manager.usuario.dto.UsuarioCriacaoRequest;
 import com.project.os_manager.usuario.dto.UsuarioResponse;
 import com.project.os_manager.usuario.enums.PerfilUsuario;
@@ -57,7 +58,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse atualizar(Long id, UsuarioCriacaoRequest request){
+    public UsuarioResponse atualizar(Long id, UsuarioAtualizacaoRequest request){
         Usuario usuario = buscarEntidade(id);
         exigirAtivo(usuario);
 
@@ -81,7 +82,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void desativa(Long id){
+    public void desativar(Long id){
         Usuario usuario = buscarEntidade(id);
         garantirQueNaoEhUltimoAdmin(usuario);
         usuario.setAtivo(false);
